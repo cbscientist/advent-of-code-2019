@@ -20,3 +20,16 @@ def calculate_fuel(module_mass):
     """
     module_fuel = floor(module_mass / 3) - 2
     return module_fuel
+
+
+def calculate_total_fuel(cumulative_fuel):
+    additional_fuel_needed = calculate_fuel(cumulative_fuel)
+
+    if additional_fuel_needed <=0:
+        print(cumulative_fuel)
+        return cumulative_fuel
+
+    else:
+        additional_mass = additional_fuel_needed
+        print(cumulative_fuel)
+        return cumulative_fuel + calculate_total_fuel(additional_mass)
