@@ -19,5 +19,7 @@ if __name__=="__main__":
 
     integers = gravityAssist.parse_input_file('day_02/input.txt')
     noun, verb = gravityAssist.get_initial_values(integers)
+    solution_input = gravityAssist.calculate_day2_output(noun, verb)
 
     print("The noun is {} and the verb is {}".format(noun, verb))
+    print("The value to submit as your answer is {}".format(solution_input))

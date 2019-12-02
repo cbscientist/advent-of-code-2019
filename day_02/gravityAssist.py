@@ -51,7 +51,7 @@ def initialize_values(integer_list, noun=12, verb=2):
     certain values to initialize data
     before applying IntCode processing
     """
-    initialized_list = integer_list
+    initialized_list = integer_list.copy()
     initialized_list[1] = noun
     initialized_list[2] = verb
 
@@ -59,9 +59,9 @@ def initialize_values(integer_list, noun=12, verb=2):
 
 
 def opcode_1(integer_list, processing_values):
-    processed_list = integer_list
-    value_1 = integer_list[processing_values[1]]
-    value_2 = integer_list[processing_values[2]]
+    processed_list = integer_list.copy()
+    value_1 = processed_list[processing_values[1]]
+    value_2 = processed_list[processing_values[2]]
 
     new_value = value_1 + value_2
 
@@ -71,7 +71,7 @@ def opcode_1(integer_list, processing_values):
 
 
 def opcode_2(integer_list, processing_values):
-    processed_list = integer_list
+    processed_list = integer_list.copy()
     value_1 = processed_list[processing_values[1]]
     value_2 = processed_list[processing_values[2]]
 
@@ -84,7 +84,7 @@ def opcode_2(integer_list, processing_values):
 
 def intcode_processing(integer_list):
     position = 0
-    intcode_list = integer_list
+    intcode_list = integer_list.copy()
 
     while position < len(intcode_list):
         opcode = intcode_list[position]
@@ -104,18 +104,11 @@ def intcode_processing(integer_list):
                 position += 4
 
 
-# To complete the gravity assist you need to determine what pair of inputs
-# produces the output 19690720
-
-
 def get_initial_values(integer_list, output=19690720):
     for noun in range(100):  # 99 + 1
         for verb in range(100):
-            print(noun, verb)
-            print(integer_list)
-            temp_list = initialize_values(integer_list, noun, verb)
-            print(temp_list)
-            processed_list = intcode_processing(temp_list)
+            intcode_to_test = initialize_values(integer_list, noun, verb)
+            processed_list = intcode_processing(intcode_to_test)
             print("Tried {}, {}".format(noun, verb))
             if processed_list[0] == output:
                 return (noun, verb)
@@ -123,10 +116,5 @@ def get_initial_values(integer_list, output=19690720):
                 pass
 
 
-
-
-
-
-
-
-
+def calculate_day2_output(noun, verb):
+    return 100 * noun + verb
