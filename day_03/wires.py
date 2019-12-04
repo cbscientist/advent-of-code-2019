@@ -39,13 +39,6 @@ def parse_input_file(input_file_name):
 
     return wire_paths
 
-
-# origin is 0,0
-# r is +x
-# l is -x
-# u is +y
-# d is -y
-
 # Calculate the coordinates of each line segment
 # wire 1, line 1, x1,y1, x2,y2, horizontal or vertical
 # wire 1, line 2, x1y1 x2y2 horizontal or vertical
@@ -60,12 +53,71 @@ def parse_input_file(input_file_name):
 # calculate intersection points
 # calculate manhattan distance (distance from origin of 0,0)
 
-# get list of points & manhattan distances
-# find minimum manhattan distance
-# return associated coordinate
+def get_coordinate_shift(direction):
+    cartesian = direction[0]
+    cartesian_directions = {}
+    if cartesian == 'L':
+        cartesian_directions['dimension'] = 'x'
+        cartesian_directions['sign'] = '-'
+    elif cartesian == 'R':
+        cartesian_directions['dimension'] = 'x'
+        cartesian_directions['sign'] = '+'
+    elif cartesian == 'D':
+        cartesian_directions['dimension'] = 'y'
+        cartesian_directions['sign'] = '-'
+    elif cartesian == 'U':
+        cartesian_directions['dimension'] = 'y'
+        cartesian_directions['sign'] = '+'
+
+    magnitude = direction[1:]
+    cartesian_directions['magnitude'] = magnitude
+
+    return cartesian_directions
 
 
-def calc_manhattan_distance(point_1, point_2):
+def calculate_line_segments(wire_path):
+    position = (0,0)
+    line_segments = []
+    for segment in wire_path:
+        cartesian_directions = get_coordinate_shift(segment)
+        x1,y1 = position
+        if cartesian_directions['dimension'] == 'x':
+            y2 = y1
+            x2 = int(cartesian_directions['sign'] + cartesian_directions['magnitude']) + x1
+            line_type = 'horizontal'
+        elif cartesian_directions['dimension'] == 'y':
+            x2 = x1
+            y2 = int(cartesian_directions['sign'] + cartesian_directions['magnitude']) + y1
+            line_type = 'vertical'
+        position = (x2, y2)
+        line_segment = [{'type': line_type, 'point_1':(x1, y1), 'point_2':(x2,y2)}]
+        line_segments += line_segment
+
+    return line_segments
+
+
+def find_intersections(horizontal_segments, vertical_segments):
+    intersections = []
+    for hortizontal_segment in horizontal_segments:
+        for vertical_segment in vertical_segments:
+            if horizontal_segment['point_1'][0] <= vertical_segment['point_1'][0] <= horizontal_segment['point_2'][0]:
+                x_range = True
+            else:
+                x_range = False
+            if vertical_segment['point_1'][1] <= horizontal_segment['point_1'][1] <= vertical_segment['point_2'][1]:
+                y_range = True
+            else:
+                x_range = False
+
+            if x_range and y_range:
+                intersect = True
+                intersection_point = (horizontal_segment['point_1'][1], vertical_segment['point_1'][0])
+                intersections += [intersection_point]
+
+    return intersections
+
+
+def calculate_manhattan_distance(point_1, point_2):
     x_distance = abs(point_2[0] - point_1[0])
     y_distance = abs(point_2[1] - point_1[1])
 

@@ -28,4 +28,23 @@ if __name__=="__main__":
     # Day 3 Processing
 
     wire_paths = wires.parse_input_file('day_03/input.txt')
-    print(wire_paths)
+    wire_path_1 = wire_paths[0]
+    wire_path_2 = wire_paths[1]
+
+    shifts_1 = []
+    for direction in wire_path_1:
+        shift = wires.get_coordinate_shift(direction)
+        shifts_1 += [shift]
+
+    shifts_2 = []
+    for direction in wire_path_2:
+        shift = wires.get_coordinate_shift(direction)
+        shifts_2 += [shift]
+
+    line_segments_1 = wires.calculate_line_segments(shifts_1)
+    line_segments_2 = wires.calculate_line_segments(shifts_2)
+
+    
+
+
+    
