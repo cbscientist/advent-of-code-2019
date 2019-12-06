@@ -17,6 +17,7 @@ def has_two_duplicate_digits(password):
         return False
 
 def is_always_increasing(password):
+    # if password == sorted(password)
     if password[0] <= password[1] <= password[2] <= password[3] <= password[4] <= password[5]:
         return True
     else:
