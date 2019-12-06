@@ -2,6 +2,8 @@ from day_01 import fuel
 from day_02 import gravityAssist
 from day_03 import wires
 
+import pdb
+
 
 if __name__=="__main__":
 
@@ -31,6 +33,15 @@ if __name__=="__main__":
     wire_path_1 = wire_paths[0]
     wire_path_2 = wire_paths[1]
 
+    # wire_path_1 = ['R8','U5','L5','D3']
+    # wire_path_2 = ['U7','R6','D4','L4']
+
+    # wire_path_1 = ['R75','D30','R83','U83','L12','D49','R71','U7','L72']
+    # wire_path_2 = ['U62','R66','U55','R34','D71','R55','D58','R83']
+
+    # wire_path_1 = ['R98','U47','R26','D63','R33','U87','L62','D20','R33','U53','R51']
+    # wire_path_2 = ['U98','R91','D20','R16','D67','R40','U7','R15','U6','R7']
+
     shifts_1 = []
     for direction in wire_path_1:
         shift = wires.get_coordinate_shift(direction)
@@ -42,7 +53,37 @@ if __name__=="__main__":
         shifts_2 += [shift]
 
     line_segments_1 = wires.calculate_line_segments(shifts_1)
+    horizontal_line_segments_1 = [segment for segment in line_segments_1 if segment['type']=='horizontal']
+    vertical_line_segments_1 = [segment for segment in line_segments_1 if segment['type']=='vertical']
+
     line_segments_2 = wires.calculate_line_segments(shifts_2)
+    horizontal_line_segments_2 = [segment for segment in line_segments_2 if segment['type']=='horizontal']
+    vertical_line_segments_2 = [segment for segment in line_segments_2 if segment['type']=='vertical']
+
+    intersections_1 = wires.find_intersections(horizontal_line_segments_1, vertical_line_segments_2)
+    intersections_2 = wires.find_intersections(horizontal_line_segments_2, vertical_line_segments_1)
+
+    all_intersections = intersections_1 + intersections_2
+    distances = []
+    for intersection in all_intersections:
+        if intersection != (0,0):
+            distance = wires.calculate_manhattan_distance(intersection)
+            distances += [{'intersection': intersection, 'distance':distance}]
+
+
+    min_distance = min([intersection['distance'] for intersection in distances])
+    final_coordinate = [intersection['intersection'] for intersection in distances if intersection['distance'] == min_distance][0]
+
+    all_combined_steps = []
+    for intersection in all_intersections:
+        if intersection != (0,0):
+            num_steps_1 = wires.calculate_number_of_steps(shifts_1, intersection)
+            num_steps_2 = wires.calculate_number_of_steps(shifts_2, intersection)
+            combined_steps = num_steps_1 + num_steps_2
+            all_combined_steps += [combined_steps]
+
+    print(min(all_combined_steps))
+
 
     
 

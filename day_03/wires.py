@@ -31,6 +31,8 @@ from the central port to the closest intersection?
 
 First, need to get input"""
 
+import pdb
+
 def parse_input_file(input_file_name):
     with open(input_file_name, 'r') as infile:
         wire_paths = infile.read().split('\n')
@@ -79,17 +81,24 @@ def calculate_line_segments(wire_path):
     position = (0,0)
     line_segments = []
     for segment in wire_path:
-        cartesian_directions = get_coordinate_shift(segment)
         x1,y1 = position
-        if cartesian_directions['dimension'] == 'x':
+        if segment['dimension'] == 'x':
             y2 = y1
-            x2 = int(cartesian_directions['sign'] + cartesian_directions['magnitude']) + x1
+            x2 = int(segment['sign'] + segment['magnitude']) + x1
             line_type = 'horizontal'
-        elif cartesian_directions['dimension'] == 'y':
+        elif segment['dimension'] == 'y':
             x2 = x1
-            y2 = int(cartesian_directions['sign'] + cartesian_directions['magnitude']) + y1
+            y2 = int(segment['sign'] + segment['magnitude']) + y1
             line_type = 'vertical'
         position = (x2, y2)
+        if x2 < x1:  # ensure proper ordering
+                x = x2
+                x2 = x1
+                x1 = x
+        if y2 < y1:
+                y = y2
+                y2 = y1
+                y1 = y
         line_segment = [{'type': line_type, 'point_1':(x1, y1), 'point_2':(x2,y2)}]
         line_segments += line_segment
 
@@ -98,7 +107,8 @@ def calculate_line_segments(wire_path):
 
 def find_intersections(horizontal_segments, vertical_segments):
     intersections = []
-    for hortizontal_segment in horizontal_segments:
+    # pdb.set_trace()
+    for horizontal_segment in horizontal_segments:
         for vertical_segment in vertical_segments:
             if horizontal_segment['point_1'][0] <= vertical_segment['point_1'][0] <= horizontal_segment['point_2'][0]:
                 x_range = True
@@ -111,14 +121,36 @@ def find_intersections(horizontal_segments, vertical_segments):
 
             if x_range and y_range:
                 intersect = True
-                intersection_point = (horizontal_segment['point_1'][1], vertical_segment['point_1'][0])
+                intersection_point = (vertical_segment['point_1'][0], horizontal_segment['point_1'][1])
                 intersections += [intersection_point]
 
     return intersections
 
 
-def calculate_manhattan_distance(point_1, point_2):
+def calculate_manhattan_distance(point_1, point_2=(0,0)):
     x_distance = abs(point_2[0] - point_1[0])
     y_distance = abs(point_2[1] - point_1[1])
 
     return x_distance + y_distance
+
+
+def calculate_number_of_steps(wire_path, final_position):
+    position = (0,0)
+    line_segments = []
+    num_steps = 0
+    for segment in wire_path:
+        x,y = position
+        if segment['dimension'] == 'x':
+            for step in range(1, int(segment['magnitude'])+1):
+                x = int(segment['sign']+'1') + x
+                num_steps += 1
+                position = (x,y)
+                if position == final_position:
+                    return num_steps
+        elif segment['dimension'] == 'y':
+            for step in range(1, int(segment['magnitude'])+1):
+                y = int(segment['sign']+'1') + y
+                num_steps += 1
+                position = (x,y)
+                if position == final_position:
+                    return num_steps
