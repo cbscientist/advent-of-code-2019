@@ -32,17 +32,37 @@ def build_graph(orbits):
     return orbit_graph
 
 
-def calculate_total_orbits(orbit_graph, node='COM', num_satellites=0):  #orbit_graph.keys()
+def cumulative_sum(n, traversed_depth=0, summation=0):
+    # Base case
+    if n == traversed_depth:
+        return summation
 
-    # pdb.set_trace()
-    if orbit_graph[node] != []:
-        for satellite in orbit_graph[node]:
-            num_satellites += 1
-            additional_satellites = calculate_total_orbits(orbit_graph, satellite, num_satellites)
-            print("Node: {}, num_satellites:{}".format(node, num_satellites))
-            return additional_satellites
-            
+    # Recursive casee
     else:
-        print("Node: {}, num_satellites:{}".format(node, 0))
-        return 1
+        summation += n
+        n = n - 1
+        return cumulative_sum(n, traversed_depth, summation)
+
+
+# Global Mutable State
+num_satellites = 0
+def calculate_total_orbits(orbit_graph, node="COM", depth=0, traversed_depth=0):
+    """
+    """
+    global num_satellites
+
+    satellites = orbit_graph[node]
+
+    # Base case: node has no child satellites
+    if len(satellites)==0:
+        num_satellites += cumulative_sum(depth, traversed_depth)
+
+    # Recursive case: node has child satellites
+    else:
+        for index, planet in enumerate(satellites):
+            if index > 0:
+                traversed_depth = depth
+            calculate_total_orbits(orbit_graph, planet, depth+1, traversed_depth)
+
+    return num_satellites
 

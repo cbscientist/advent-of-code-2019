@@ -30,9 +30,9 @@ if __name__=="__main__":
 
     # Day 3 Processing
 
-    wire_paths = wires.parse_input_file('day_03/input.txt')
-    wire_path_1 = wire_paths[0]
-    wire_path_2 = wire_paths[1]
+    # wire_paths = wires.parse_input_file('day_03/input.txt')
+    # wire_path_1 = wire_paths[0]
+    # wire_path_2 = wire_paths[1]
 
     # wire_path_1 = ['R8','U5','L5','D3']
     # wire_path_2 = ['U7','R6','D4','L4']
