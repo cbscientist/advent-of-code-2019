@@ -3,6 +3,7 @@
 # in space is in orbit around exactly one other object
 import pdb
 
+
 def parse_input_file(input_filename):
     with open(input_filename, 'r') as infile:
         orbit_input = infile.read().split('\n')
@@ -65,4 +66,10 @@ def calculate_total_orbits(orbit_graph, node="COM", depth=0, traversed_depth=0):
             calculate_total_orbits(orbit_graph, planet, depth+1, traversed_depth)
 
     return num_satellites
+
+
+def calculate_shortest_path(orbit_graph, planet_1, planet_2):
+
+
+    return
 
