@@ -34,13 +34,14 @@ and replace position 2 with value 2
 ok - I think this is enough notes for now, jeez
 """
 
+
 def parse_input_file(input_file_name):
     """
     Reads in day 2 input file and
     returns a list of integers
     """
-    with open(input_file_name, 'r') as infile:
-        integers = [int(value) for value in infile.read().split(',')]
+    with open(input_file_name, "r") as infile:
+        integers = [int(value) for value in infile.read().split(",")]
 
         return integers
 
@@ -88,12 +89,12 @@ def intcode_processing(integer_list):
 
     while position < len(intcode_list):
         opcode = intcode_list[position]
-        
+
         if opcode == 99:
             return intcode_list
 
         else:
-            processing_values = intcode_list[position:position+4]
+            processing_values = intcode_list[position : position + 4]
 
             if opcode == 1:
                 intcode_list = opcode_1(intcode_list, processing_values)

@@ -6,7 +6,7 @@ from day_06 import orbit
 import pdb
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
 
     # # Day 1 Processing
     # masses = fuel.parse_input_file('day_01/input.txt')
@@ -71,7 +71,6 @@ if __name__=="__main__":
     #         distance = wires.calculate_manhattan_distance(intersection)
     #         distances += [{'intersection': intersection, 'distance':distance}]
 
-
     # min_distance = min([intersection['distance'] for intersection in distances])
     # final_coordinate = [intersection['intersection'] for intersection in distances if intersection['distance'] == min_distance][0]
 
@@ -86,16 +85,10 @@ if __name__=="__main__":
     # print(min(all_combined_steps))
     # pdb.set_trace()
 
-    orbits = orbit.parse_input_file('day_06/test_input.txt')
+    orbits = orbit.parse_input_file("day_06/test_input.txt")
 
     orbit_graph = orbit.build_graph(orbits)
     print(orbit_graph)
 
     total = orbit.calculate_total_orbits(orbit_graph)
     print(total)
-
-
-    
-
-
-    

@@ -5,13 +5,13 @@ import pdb
 
 
 def parse_input_file(input_filename):
-    with open(input_filename, 'r') as infile:
-        orbit_input = infile.read().split('\n')
+    with open(input_filename, "r") as infile:
+        orbit_input = infile.read().split("\n")
         orbits = []
         for orbit in orbit_input:
             # parent is orbited by child
-            parent_and_child = orbit.split(')')
-            orbit = {'parent': parent_and_child[0],'child': parent_and_child[1]}
+            parent_and_child = orbit.split(")")
+            orbit = {"parent": parent_and_child[0], "child": parent_and_child[1]}
             orbits += [orbit]
 
     return orbits
@@ -23,12 +23,12 @@ def build_graph(orbits):
     # in a directed graph, nodes are connected by arcs
     orbit_graph = {}
     for orbit in orbits:
-        if orbit['parent'] not in orbit_graph.keys():
-            orbit_graph[orbit['parent']] = [orbit['child']]
+        if orbit["parent"] not in orbit_graph.keys():
+            orbit_graph[orbit["parent"]] = [orbit["child"]]
         else:
-            orbit_graph[orbit['parent']] += [orbit['child']]
-        if orbit['child'] not in orbit_graph.keys():
-            orbit_graph[orbit['child']] = []
+            orbit_graph[orbit["parent"]] += [orbit["child"]]
+        if orbit["child"] not in orbit_graph.keys():
+            orbit_graph[orbit["child"]] = []
 
     return orbit_graph
 
@@ -47,6 +47,8 @@ def cumulative_sum(n, traversed_depth=0, summation=0):
 
 # Global Mutable State
 num_satellites = 0
+
+
 def calculate_total_orbits(orbit_graph, node="COM", depth=0, traversed_depth=0):
     """
     """
@@ -55,7 +57,7 @@ def calculate_total_orbits(orbit_graph, node="COM", depth=0, traversed_depth=0):
     satellites = orbit_graph[node]
 
     # Base case: node has no child satellites
-    if len(satellites)==0:
+    if len(satellites) == 0:
         num_satellites += cumulative_sum(depth, traversed_depth)
 
     # Recursive case: node has child satellites
@@ -63,13 +65,11 @@ def calculate_total_orbits(orbit_graph, node="COM", depth=0, traversed_depth=0):
         for index, planet in enumerate(satellites):
             if index > 0:
                 traversed_depth = depth
-            calculate_total_orbits(orbit_graph, planet, depth+1, traversed_depth)
+            calculate_total_orbits(orbit_graph, planet, depth + 1, traversed_depth)
 
     return num_satellites
 
 
 def calculate_shortest_path(orbit_graph, planet_1, planet_2):
 
-
     return
-
