@@ -1,5 +1,5 @@
 from day_01 import fuel
-from day_02 import gravityAssist
+from day_02 import intcode
 from day_03 import wires
 from day_06 import orbit
 
@@ -86,6 +86,7 @@ if __name__ == "__main__":
     # pdb.set_trace()
 
     orbits = orbit.parse_input_file("day_06/test_input.txt")
+    print(orbits)
 
     orbit_graph = orbit.build_graph(orbits)
     print(orbit_graph)
